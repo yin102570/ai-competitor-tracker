@@ -1,0 +1,57 @@
+# ============================================================
+# .dockerignore - 排除不需要的文件
+# ============================================================
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# 虚拟环境
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 测试
+tests/
+.pytest_cache/
+htmlcov/
+.coverage
+coverage.xml
+
+# 日志和数据
+logs/
+data/
+backups/
+*.db
+*.sqlite
+*.sqlite3
+
+# 环境
+.env
+.env.local
+.env.production
+
+# Docker
+docker/
+Dockerfile
+docker-compose*.yml
+
+# 文档和报告
+reports/
+*.md
+LICENSE
+README.md

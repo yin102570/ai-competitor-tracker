@@ -1,0 +1,52 @@
+# ============================================================
+# AI对话产品竞品动态追踪与智能对标分析系统 - Python依赖
+# 技术基线锁定版本（阶段二确认）
+# ============================================================
+
+# --- Web框架 ---
+fastapi==0.139.0
+uvicorn[standard]==0.34.0
+python-multipart==0.0.20
+
+# --- 数据验证 ---
+pydantic==2.10.4
+pydantic-settings==2.7.0
+
+# --- 数据库 ---
+sqlalchemy[asyncio]==2.0.36
+aiosqlite==0.20.0
+
+# --- 缓存 ---
+redis[hiredis]==5.2.0
+
+# --- 认证安全 ---
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+bcrypt==4.2.1
+
+# --- HTTP客户端 ---
+httpx==0.28.1
+
+# --- 任务队列 ---
+celery==5.6.3
+
+# --- 爬虫引擎 ---
+playwright==1.61.0
+scrapy==2.16.0
+beautifulsoup4==4.12.3
+lxml==5.3.0
+
+# --- AI服务 ---
+openai>=1.59.0,<2.0.0  # DeepSeek API兼容OpenAI SDK（可选）
+
+# --- 支付 ---
+cryptography==44.0.0  # 微信支付RSA签名/AES解密
+
+# --- 工具库 ---
+python-dateutil==2.9.0
+orjson==3.10.12
+
+# --- 测试 ---
+pytest==8.3.4
+pytest-asyncio==0.25.0
+pytest-cov==6.0.0
