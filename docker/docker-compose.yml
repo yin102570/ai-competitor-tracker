@@ -1,11 +1,29 @@
 # ============================================================
 # docker-compose.yml - AI竞品追踪系统完整部署
-# 服务: backend / celery-worker / redis / nginx
+# 服务: frontend / backend / celery-worker / celery-beat / redis / nginx
 # ============================================================
 
 version: "3.9"
 
 services:
+  # === Vue3 前端 ===
+  frontend:
+    build:
+      context: ..
+      dockerfile: docker/frontend/Dockerfile
+    container_name: tracker-frontend
+    restart: unless-stopped
+    expose:
+      - "80"
+    networks:
+      - tracker-net
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:80/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
   # === FastAPI 后端 ===
   backend:
     build:
@@ -14,7 +32,7 @@ services:
     container_name: tracker-backend
     restart: unless-stopped
     env_file:
-      - ../.env
+      - ../backend/.env
     environment:
       - APP_ENV=production
       - APP_DEBUG=false
@@ -44,7 +62,7 @@ services:
     container_name: tracker-celery
     restart: unless-stopped
     env_file:
-      - ../.env
+      - ../backend/.env
     environment:
       - APP_ENV=production
       - APP_DEBUG=false
@@ -72,7 +90,7 @@ services:
     container_name: tracker-beat
     restart: unless-stopped
     env_file:
-      - ../.env
+      - ../backend/.env
     environment:
       - APP_ENV=production
     command: >
@@ -110,19 +128,20 @@ services:
     networks:
       - tracker-net
 
-  # === Nginx 反向代理 ===
+  # === Nginx 反向代理（统一入口） ===
   nginx:
     image: nginx:1.27-alpine
     container_name: tracker-nginx
     restart: unless-stopped
     ports:
       - "80:80"
-      - "443:443"
     volumes:
       - ../docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ../docker/nginx/conf.d:/etc/nginx/conf.d:ro
       - nginx-logs:/var/log/nginx
     depends_on:
+      frontend:
+        condition: service_healthy
       backend:
         condition: service_healthy
     networks:
